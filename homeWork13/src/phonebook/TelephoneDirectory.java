@@ -1,34 +1,35 @@
 package phonebook;
 
+import java.util.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TelephoneDirectory {
-    private HashMap<ArrayList<String>, String> map;
+    private final HashMap<String, List<Entry>> map = new HashMap<>();
 
-    public TelephoneDirectory(HashMap<ArrayList<String>, String> map) {
-        setMap(map);
+    public void add(Entry write) {
+        List<Entry> array = map.get(write.getName());
+        if (array == null) {
+            List<Entry> arr = new ArrayList<>();
+            arr.add(write);
+            map.put(write.getName(), arr);
+        } else {
+            System.out.println("Adding " + write.getName() + " to existing list");
+            array.add(write);
+        }
+
+//        for(Map.Entry<String, List<Entry>> arr: map.entrySet()) {
+//            System.out.println(arr.getKey() + " - " + arr.getValue());
+//        }
     }
 
-    public HashMap<ArrayList<String>, String> getMap() {
-        return map;
-    }
-
-    public void setMap(HashMap<ArrayList<String>, String> map) {
-        this.map = map;
-    }
-
-    public void add(TelephoneDirectory directory, Entry write) {
-        directory.getMap().put(write.getArrayPhones(), write.getName());
-    }
-
-    public String find(TelephoneDirectory telephoneDirectory, Entry write) {
+    public String find(Entry write) {
         String findWrite = null;
 
-        for (Map.Entry arr : telephoneDirectory.map.entrySet()) {
-            if (write.getName().equals(arr.getValue())) {
-                findWrite = arr.getValue() + " - " + arr.getKey().toString();
+        for (Map.Entry<String, List<Entry>> arr : map.entrySet()) {
+            if (write.getName().equals(arr.getKey())) {
+                findWrite = arr.getKey() + " - " + arr.getValue();
                 break;
             }
         }
@@ -36,15 +37,13 @@ public class TelephoneDirectory {
         return findWrite;
     }
 
-    public ArrayList<String> findAll(TelephoneDirectory telephoneDirectory, Entry write) {
-        String findWrite = null;
-
+    public ArrayList<String> findAll(Entry write) {
         ArrayList<String> array = new ArrayList<>();
+        //String findWrite = null;
 
-        for (Map.Entry arr : telephoneDirectory.getMap().entrySet()) {
-            if (write.getName().equals(arr.getValue())) {
-                findWrite = arr.getValue() + " - " + arr.getKey().toString();
-                array.add(findWrite);
+        for (Map.Entry<String, List<Entry>> arr : map.entrySet()) {
+            if (write.getName().equals(arr.getKey())) {
+                array.add(arr.getValue() + " - " + arr.getKey());
             }
         }
 

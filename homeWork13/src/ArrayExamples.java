@@ -1,8 +1,15 @@
-import phonebook.Entry;
-
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ArrayExamples {
+    String name;
+    int count;
+
+    public ArrayExamples(String name, int count) {
+        this.name = name;
+        this.count = count;
+    }
+
     public static void main(String[] args) {
         String[] words = {"apple", "orange", "pineapple", "banana", "apricot",
                 "apricot", "broccoli", "carrot", "cherry", "garlic",
@@ -14,13 +21,17 @@ public class ArrayExamples {
         System.out.println(countOccurrence(arrayString, "apricot"));
 
 
-        ArrayList<Integer> arrayList = new ArrayList<>();
+        Integer[] array = new Integer[10];
 
         for (int i = 0; i < 10; i++) {
-            arrayList.add(i);
+            array[i] = i;
         }
 
-        List<Integer> list = toList(arrayList);
+        ArrayList<Integer> arrayList = (ArrayList<Integer>) toList(array);
+
+        for(Integer arr: arrayList) {
+            System.out.println(arr);
+        }
 
 
         ArrayList<Integer> intArray = new ArrayList<>();
@@ -36,11 +47,7 @@ public class ArrayExamples {
 
         calcOccurrence(arrayString);
 
-        HashMap<String, Integer> map = findOccurrence(arrayString);
-
-        for (Map.Entry arr : map.entrySet()) {
-            System.out.println("name " + arr.getKey() + ", occurrence: " + arr.getValue());
-        }
+        findOccurrence(arrayString);
     }
 
     public static int countOccurrence(ArrayList<String> stringArray, String str) {
@@ -54,8 +61,8 @@ public class ArrayExamples {
         return count;
     }
 
-    public static List<Integer> toList(ArrayList<Integer> intArray) {
-        return intArray.stream().toList();
+    public static <Integer> List<Integer> toList(Integer[] arr) {
+        return Arrays.stream(arr).collect(Collectors.toList());
     }
 
     public static ArrayList<Integer> findUnique(ArrayList<Integer> intArray) {
@@ -86,13 +93,20 @@ public class ArrayExamples {
         }
     }
 
-    public static HashMap<String, Integer> findOccurrence(ArrayList<String> stringArray) {
-        HashMap<String, Integer> map = new HashMap<>();
+    public static ArrayList<ArrayExamples> findOccurrence(ArrayList<String> stringArray) {
+        Set<String> set = new LinkedHashSet<>(stringArray);
+        ArrayList<ArrayExamples> objectArray = new ArrayList<>();
 
-        for (int i = 0; i < stringArray.size(); i++) {
-            map.put(stringArray.get(i), Collections.frequency(stringArray, stringArray.get(i)));
+        for(String arr: set) {
+            int sum = Collections.frequency(stringArray, arr);
+            objectArray.add(new ArrayExamples(arr, sum));
         }
 
-        return map;
+        for(ArrayExamples arr: objectArray) {
+            System.out.println("{name: \"" + arr.name + "\", occurrence: " + arr.count + "}");
+        }
+
+        return objectArray;
     }
+
 }
