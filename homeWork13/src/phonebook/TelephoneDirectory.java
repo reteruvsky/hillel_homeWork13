@@ -10,6 +10,7 @@ public class TelephoneDirectory {
 
     public void add(Entry write) {
         List<Entry> array = map.get(write.getName());
+
         if (array == null) {
             List<Entry> arr = new ArrayList<>();
             arr.add(write);
@@ -18,10 +19,6 @@ public class TelephoneDirectory {
             System.out.println("Adding " + write.getName() + " to existing list");
             array.add(write);
         }
-
-//        for(Map.Entry<String, List<Entry>> arr: map.entrySet()) {
-//            System.out.println(arr.getKey() + " - " + arr.getValue());
-//        }
     }
 
     public String find(Entry write) {
@@ -29,7 +26,7 @@ public class TelephoneDirectory {
 
         for (Map.Entry<String, List<Entry>> arr : map.entrySet()) {
             if (write.getName().equals(arr.getKey())) {
-                findWrite = arr.getKey() + " - " + arr.getValue();
+                findWrite = arr.getKey() + " - " + arr.getValue().get(0);
                 break;
             }
         }
@@ -39,11 +36,10 @@ public class TelephoneDirectory {
 
     public ArrayList<String> findAll(Entry write) {
         ArrayList<String> array = new ArrayList<>();
-        //String findWrite = null;
 
         for (Map.Entry<String, List<Entry>> arr : map.entrySet()) {
             if (write.getName().equals(arr.getKey())) {
-                array.add(arr.getValue() + " - " + arr.getKey());
+                array.add(arr.getKey() + " - " + arr.getValue());
             }
         }
 
